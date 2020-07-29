@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mathematical Martial Arts</title>
+    <link rel="stylesheet" href="scripts/style.css">
+    <link rel="icon" href="assets/images/logo.png">
+    
+</head>
+
+<body>
+    <div id="play-screen" style="display:none">
+        <img src="assets/images/logo.png" alt="logo">
+        <br><br>
+        <button id="play-playButton">Start Thine Journey</button>
+        <br><br>
+        <button id="play-instructionButton">Be Learned</button>
+        <br><br>
+        <button id="play-highscoreButton">Records of Warriors Past</button>
+    </div>
+    <div id="login-screen" style="display:none">
+        <img src="assets/images/logo.png" alt="logo">
+        <br><br><br><br><br><br><br><br>
+        <input type="text" id="login-nameInput" placeholder="Enter thine name">
+        <br><br><br>
+        <button id="login-loginButton">Enter the field of battle</button>
+        <br><br>
+        <button id="login-backButton">Flee in a Manner Befitting of a Coward</button>
+    </div>
+    <div id="game-screen" style="display:none">
+        <table>
+            <tr>
+                <td id="game-playerName">Player Name</td>
+                <td id="game-enemyName">Enemy Name</td>
+            </tr>
+            <tr>
+                <td id="game-playerHealth">Player Health</td>
+                <td id="game-enemyHealth">Enemy Health</td>
+            </tr>
+        </table>
+        <p id="game-time"></p>
+        <p id="game-coins"></p>
+        <canvas id="game-canvas">
+    </canvas>
+    <br>
+    <p id="game-questionText" text-align="center">a</p>
+        <button onclick="btn1Click()" id="game-button1">button 1</button>
+        <button onclick="btn2Click()" id="game-button2">button 2</button>
+        <br>
+        <button onclick="btn3Click()" id="game-button3">button 3</button>
+        <button onclick="btn4Click()" id="game-button4">button 4</button>
+        
+    </div>
+    <div id="instructions-screen" style="display:none">
+        <h1>Knowledge of the Wise Ones</h1>
+        <p>Thou hast come here to slay the vile critters who roam this plain of ours.
+            <br>Defeat thine adversaries with the strength of thine own mind.
+            <br>Thine vitality is visible at the top left corner of mine kingdom, thine adversaries is on the right.
+            <br>Answer the riddles posed to you below our mortal plain within the time limit provided using the mystical boxes to fight thine Enemy.
+            <br>Let this beknown young warrior, Thine adversary hast strength and they shall mean you harm.
+            <br>However do not fear. Thine vitality grows once an adversary is defeated.
+            <br>Furthermore thou canst increase thine potential through deals made at the Skill Shop.
+            <br>The sorcerer within the shop can provide thee with blessings and miracles to help thou through thine journey in return for some coin.
+            <br>Thou can collect coin through the defeat of an enemy.
+            <br>That is all the knowledge we can offer thou young warrior.
+            <br>Thine feats shall be recorded in history and thine name shalt not be forgotten in the minds of man for eons to come.
+            <br>Good luck young warrior, the prophecies speal great things of you.
+        </p>
+        <button id="instructions-backButton">Return to Where Thine Arrived</button>
+    </div>
+    <div id="highscores-screen" style="display:none">
+        <h1>Records of Warriors Past</h1>
+        <p id="highscores-scores"></p>
+        <button id="highscores-restartButton">Return to Where Thine Arrived</button>
+    </div>
+    
+</body>
+
+<script src="scripts/main.js"></script>
+
+</html>

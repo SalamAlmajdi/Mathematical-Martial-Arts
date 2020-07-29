@@ -1,0 +1,21 @@
+body {
+    text-align: center;
+  }
+
+button {
+    width: 25vw;
+    height: 10vh;
+}
+
+canvas {
+    width: 50vw;
+    height: 50vh;
+    border:1px solid #000000;
+    margin-top: 3vh;
+}
+
+table {
+    margin: auto;
+    width: 50vw;
+    margin-top: 5vh;
+}
