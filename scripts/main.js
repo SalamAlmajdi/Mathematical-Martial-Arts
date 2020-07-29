@@ -432,7 +432,7 @@ function handleInput(question, num, timeOut) {
     elements.game.button2.disabled = true;
     elements.game.button3.disabled = true;
     elements.game.button4.disabled = true;
-    let damageToPlayer = Math.floor(Math.random() * 21);
+    let damageToPlayer = Math.floor(Math.random() * 16);
     damageToPlayer += damageToPlayer * (difficulty / 3);
     damageToPlayer = Math.floor((damageToPlayer) / enemyWeakness);
     if (! timeOut) {
