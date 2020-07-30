@@ -303,7 +303,10 @@ function purchase(choice) {
             playerImage.src = 'assets/images/player_0.png';
         }
         difficulty += 1;
-        playerHealth += Math.floor(playerHealth / 3);
+        playerHealth += Math.floor(playerHealth / 4);
+        if (playerHealth > 100) {
+            playerHealth = 100;
+        }
         newQuestion();
     }
 }
