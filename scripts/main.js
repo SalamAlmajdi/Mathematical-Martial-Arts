@@ -35,7 +35,7 @@ const elements = {
         restartButton: document.getElementById("highscores-restartButton"),
         scores: document.getElementById("highscores-scores"),
     }
-}
+} // this list of elements is sort of like a simple to understand dictionary of all elements that appear on the screen
 
 const screens = {
     playScreen: elements.play.screen,
@@ -43,9 +43,9 @@ const screens = {
     gameScreen: elements.game.screen, 
     instructionsScreen: elements.instructions.screen, 
     highscoresScreen: elements.highscores.screen
-};
+}; // a list of screens within the game
 
-class Question {
+class Question { // the question class which is used as a cookie cutter for the questions that appear in game
     constructor(questionText, answer, possibleAnswers, correctAnswerIndex, maxTime) {
       this.questionText = questionText;
       this.answer = answer;
@@ -54,7 +54,7 @@ class Question {
       this.maxTime = maxTime;
     }
 }
-
+// initialising some variables
 let difficulty = 1;
 var tid;
 let timeLeft;
@@ -79,12 +79,15 @@ let coin = 0;
 let isShop = false;
 let played = false;
 
+// this is when the site starts up, it plays music.
+// this doesnt work in chrome, they decided to block this feature
 window.onload = function() {
     gameMusic.src = "assets/sounds/startTheme.mp3"
     gameMusic.loop = true;
     gameMusic.play();
 }
 
+// setting up uht buttons within the game
 elements.play.playButton.addEventListener("click", function(){
     showLogin();
     gameMusic.play();
@@ -132,6 +135,7 @@ elements.highscores.restartButton.addEventListener("click", function(){
     }
 });
 
+// the following functions load and remove the different screens within the game e.g instructions screen
 function hideScreens() {
     Object.values(screens).forEach(screen => {
         screen.style.display = "none";
@@ -155,7 +159,7 @@ function showInstructions() {
     showScreen(elements.instructions.screen);
 }
 
-
+// draws the background of the battle are, grass and a blue sky
 function drawBackground() {
     ctx.fillStyle = "deepskyblue";
     ctx.beginPath();
@@ -197,6 +201,7 @@ function showGame() {
     newQuestion();
 }
 
+// handling the answer buttons
 function btn1Click() {
     if (isShop) {
         purchase(0);
@@ -229,6 +234,7 @@ function btn4Click() {
     }
 }
 
+// this function creates a new randomised question
 function newQuestion() {
     chooseQuestion(difficulty);
     timeLeft = x.maxTime;
@@ -236,6 +242,7 @@ function newQuestion() {
     setTimeout(updateUI, 500);
 }
 
+// this function displays the shop
 function shop() {
     isShop = true;
     elements.game.playerName.innerText = "";
@@ -258,6 +265,7 @@ function shop() {
     elements.game.button4.disabled = false;
 }
 
+// this function handles the inputs to the shop
 function purchase(choice) {
     if (choice === 0) {
         if (coin >= timeUpgradeLevel) {
@@ -289,7 +297,7 @@ function purchase(choice) {
         } else {
             alert("Thine coin is too measly to acquire such a skill");
         }
-    } else if (choice === 3) {
+    } else if (choice === 3) { // this runs when the exit button is pressed, essentially prepares for the next enemy
         isShop = false;
         ctx.clearRect(0, 0, elements.game.canvas.width, elements.game.canvas.height);
         drawBackground();
@@ -304,10 +312,15 @@ function purchase(choice) {
         }
         difficulty += 1;
         playerHealth += Math.floor(playerHealth / 3);
+        if (playerHealth > 100) {
+            playerHealth = 100;
+        }
         newQuestion();
     }
 }
 
+// decided which question is suitable for the current difficulty
+// note that x is the question, as x represents the unknown
 function chooseQuestion(difficulty) {
     if (difficulty === 1) {
         x = createAdditionQuestion(difficulty);
@@ -330,6 +343,7 @@ function chooseQuestion(difficulty) {
     }
 }
 
+// these functions build the questions
 function createAdditionQuestion(difficulty) {
     const maxNum = (10 ** difficulty);
     const num1 = Math.floor(Math.random() * maxNum);
@@ -390,6 +404,8 @@ function createMultiplicationQuestion(difficulty) {
     return new Question(text, answer, possibleAnswers, correctAnswerIndex, maxtime);
 }
 
+// the countdown timer for each question.
+// it calls the handle input function once time has rum out
 function timer() {
     if (timeLeft % 1 == 0) {
         elements.game.time.innerText = "Time remaining for thee: " + timeLeft;
@@ -405,6 +421,7 @@ function abortTimer() {
     clearTimeout(tid);
 }
 
+// this updates all the elements on the screen with the new data
 function updateUI() {
     elements.game.playerName.innerText = "Thine Name: " + playerName;
     elements.game.playerHealth.innerText = "Thine Vitality: " + playerHealth;
@@ -426,13 +443,14 @@ function updateUI() {
     elements.game.button4.disabled = false;
 }
 
+// this function takes in the inputs from the game and decided the amount of damage dealt to the player and enemies
 function handleInput(question, num, timeOut) {
     abortTimer();
     elements.game.button1.disabled = true;
     elements.game.button2.disabled = true;
     elements.game.button3.disabled = true;
     elements.game.button4.disabled = true;
-    let damageToPlayer = Math.floor(Math.random() * 16);
+    let damageToPlayer = Math.floor(Math.random() * 21);
     damageToPlayer += damageToPlayer * (difficulty / 3);
     damageToPlayer = Math.floor((damageToPlayer) / enemyWeakness);
     if (! timeOut) {
@@ -441,17 +459,18 @@ function handleInput(question, num, timeOut) {
             movePlayer();
             let damageToEnemy = Math.floor((25 - (25 / (timeLeft + 1.5))));
             damageToEnemy += (damageToEnemy / 2) * (strengthLevel - 1);
-            enemyHealth -= damageToEnemy;
-            damageToPlayer -= (damageToPlayer + 1) / 2;
+            enemyHealth -= Math.floor(damageToEnemy);
+            damageToPlayer -= (damageToPlayer + 1) / 3;
         } else {
             moveEnemy();
         }
     } else {
         moveEnemy();
     }
-    playerHealth -= damageToPlayer; 
+    playerHealth -= Math.floor(damageToPlayer); 
 }
 
+// this produces really bad randomly generated names for the enemies
 function randomNameGen() {
     const vowels = ["a", "e", "i", "o", "u"];
     const consonants = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z"];
@@ -467,6 +486,7 @@ function randomNameGen() {
     return name;
 }
 
+// this function moves the player accross the screen and back
 function movePlayer() {
     if (playerPos >= elements.game.canvas.width * (5 / 8)) {
         hasMoved = true;
@@ -504,6 +524,7 @@ function movePlayer() {
     
 }
 
+// same as before but it is the enemy instead
 function moveEnemy() {
     if (enemyPos <= elements.game.canvas.width * (1 / 4)) {
         hasMoved = true;
@@ -540,6 +561,9 @@ function moveEnemy() {
     
 }
 
+// this reads the highscores from the browsers local storage (essentialy a highscores file saved within the browser)
+// it is read as a string and is parsed into an array
+// once the array is sorted using the sortHighscores function below, it is displayed
 function showHighscores(played) {
     let scores;
     if ((localStorage.getItem("highScoresList") === null) && (played)) {
@@ -559,6 +583,7 @@ function showHighscores(played) {
     showScreen(elements.highscores.screen);
 }
 
+// this is a hand written selection sort
 function sortHighscores(highscores) {
     let len = highscores.length;
     for (let i = 0; i < len; i++) {
@@ -580,6 +605,7 @@ function sortHighscores(highscores) {
     return highscores;
 }
 
+// these few lines get everything going
 function main() {
     showPlay();
 }
