@@ -1,3 +1,4 @@
 # Mathematical Martial Arts
-play it here: https://salamalmajdi.github.io/Mathematical-Martial-Arts/
-Or run the index.html file if you have the source files.
+* No installation required
+* play it here: https://salamalmajdi.github.io/Mathematical-Martial-Arts/
+* Or just run index.html to run it locally

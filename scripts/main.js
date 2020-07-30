@@ -1,17 +1,17 @@
 const elements = {
-    play : {
+    play : { //all the elements on the inital screen
         screen: document.getElementById("play-screen"),
         playButton: document.getElementById("play-playButton"),
         instructionButton: document.getElementById("play-instructionButton"),
         highscoreButton: document.getElementById("play-highscoreButton"),
     },
-    login: {
+    login: {//all the elements on the login screen
         screen: document.getElementById("login-screen"),
         loginButton: document.getElementById("login-loginButton"),
         nameInput: document.getElementById("login-nameInput"),
         backButton: document.getElementById("login-backButton"),
     },
-    game: {
+    game: {//all the elements on the maingame screen
         screen: document.getElementById("game-screen"),
         playerName: document.getElementById("game-playerName"),
         playerHealth: document.getElementById("game-playerHealth"),
@@ -21,16 +21,16 @@ const elements = {
         button2: document.getElementById("game-button2"),
         button3: document.getElementById("game-button3"),
         button4: document.getElementById("game-button4"),
-        canvas: document.getElementById("game-canvas"),
+        canvas: document.getElementById("game-canvas"), //the canvas is where the animation happens
         time: document.getElementById("game-time"),
         questionText: document.getElementById("game-questionText"),
         coins: document.getElementById("game-coins")
     },
-    instructions: {
+    instructions: {//all the elements on the instruction screen
         screen: document.getElementById("instructions-screen"),
         backButton: document.getElementById("instructions-backButton")
     },
-    highscores: {
+    highscores: {//all the elements on the highscore screen
         screen: document.getElementById("highscores-screen"),
         restartButton: document.getElementById("highscores-restartButton"),
         scores: document.getElementById("highscores-scores"),
@@ -66,7 +66,7 @@ let enemyHealth;
 let playerPos;
 let enemyPos;
 let hasMoved = false;
-var ctx = elements.game.canvas.getContext("2d");
+var ctx = elements.game.canvas.getContext("2d"); //context is used for drawing on the canvas
 var shopImage = new Image();
 var playerImage = new Image();
 var enemyImage = new Image();
@@ -88,7 +88,7 @@ window.onload = function() {
     gameMusic.play();
 }
 
-// setting up uht buttons within the game
+// setting up the buttons within the game
 elements.play.playButton.addEventListener("click", function(){
     showLogin();
     gameMusic.play();
@@ -160,8 +160,8 @@ function showInstructions() {
     showScreen(elements.instructions.screen);
 }
 
-// draws the background of the battle are, grass and a blue sky
-function drawBackground() {
+// draws the background of the battle which is grass and a blue sky
+function drawBackground() { //drawing 2 rectangles, blue and green
     ctx.fillStyle = "deepskyblue";
     ctx.beginPath();
     ctx.rect(0, 0, elements.game.canvas.width, elements.game.canvas.height * (3 / 8));
@@ -172,13 +172,13 @@ function drawBackground() {
     ctx.fill();
 }
 
-function showGame() {
+function showGame() { //this function is responsible for displaying the main game screen
     gameMusic.src = "assets/sounds/gameTheme.mp3";
     gameMusic.play();
     enemyName = randomNameGen();
     playerHealth = 100;
     enemyHealth = 100;
-    elements.game.playerName.innerText = "Thine Name: " + playerName;
+    elements.game.playerName.innerText = "Thine Name: " + playerName; //updating on screen elements
     elements.game.playerHealth.innerText = "Thine Vitality: " + playerHealth;
     elements.game.enemyName.innerText = "Name of thine adversary: " + enemyName;
     elements.game.enemyHealth.innerText = "Vitality of thine adversary: " + enemyHealth;
@@ -193,13 +193,13 @@ function showGame() {
     enemyImage.src = enemyImagePath + enemyImageChooser + ".png";
     shopImage.src = 'assets/images/shop.png';
     playerImage.onload = () => {
-        ctx.drawImage(playerImage, playerPos, elements.game.canvas.height / 4, playerImage.width / 2, playerImage.height / 2)
+        ctx.drawImage(playerImage, playerPos, elements.game.canvas.height / 4, playerImage.width / 2, playerImage.height / 2) //initialising and placing images on canvas
     }
     enemyImage.onload = () => {
         ctx.drawImage(enemyImage, enemyPos, elements.game.canvas.height / 4, enemyImage.width / 2, enemyImage.height / 2)
     }
     showScreen(elements.game.screen);
-    newQuestion();
+    newQuestion(); //creating the first question
 }
 
 // handling the answer buttons
@@ -247,7 +247,7 @@ function newQuestion() {
 function shop() {
     isShop = true;
     elements.game.playerName.innerText = "";
-    elements.game.playerHealth.innerText = "";
+    elements.game.playerHealth.innerText = ""; //updating on screen elements
     elements.game.enemyName.innerText = "";
     elements.game.enemyHealth.innerText = "";
     elements.game.time.innerText = "";
@@ -318,7 +318,7 @@ function purchase(choice) {
         enemyPos = elements.game.canvas.width * (5 / 8);
         enemyHealth = 100;
         enemyName = randomNameGen();
-        enemyImageChooser = Math.floor(Math.random() * 7) + 1;
+        enemyImageChooser = Math.floor(Math.random() * 7) + 1; //this section handles the post shop updates, this occurs when the player presses the exit shop button
         enemyImage.src = enemyImagePath + enemyImageChooser + ".png";
         if (strengthLevel > 1) {
             playerImage.src = 'assets/images/player_0.png';
@@ -338,7 +338,7 @@ function chooseQuestion(difficulty) {
     if (difficulty === 1) {
         x = createAdditionQuestion(difficulty);
     } else if (difficulty === 2) {
-        var rand = Math.floor(Math.random() * 2 + 1);
+        var rand = Math.floor(Math.random() * 2 + 1); //rand decided whether it should be an addition, subtraction or multiplication question that occurs next
         if (rand === 1) {
             x = createSubtractionQuestion(difficulty);
         } else {
@@ -374,7 +374,7 @@ function createAdditionQuestion(difficulty) {
     possibleAnswers[correctAnswerIndex] = answer;
     let maxtime = (3 + (difficulty - 1) * 2);
     maxtime += (maxtime / 2) * (timeUpgradeLevel - 1);
-    return new Question(text, answer, possibleAnswers, correctAnswerIndex, maxtime);
+    return new Question(text, answer, possibleAnswers, correctAnswerIndex, maxtime); //returns an instance of the Question class with the randomly generated elements above
 }
 
 function createSubtractionQuestion(difficulty) {
@@ -418,7 +418,7 @@ function createMultiplicationQuestion(difficulty) {
 }
 
 // the countdown timer for each question.
-// it calls the handle input function once time has rum out
+// it calls the handle input function once time has run out
 function timer() {
     if (timeLeft % 1 == 0) {
         elements.game.time.innerText = "Time remaining for thee: " + timeLeft;
@@ -430,7 +430,7 @@ function timer() {
         tid = setTimeout(timer, 500);
     }
 }
-function abortTimer() { 
+function abortTimer() {  
     clearTimeout(tid);
 }
 
@@ -456,7 +456,7 @@ function updateUI() {
     elements.game.button4.disabled = false;
 }
 
-// this function takes in the inputs from the game and decided the amount of damage dealt to the player and enemies
+// this function takes in the inputs from the game and decided the amount of damage dealt to the player and enemies, it also decides which animations should occur
 function handleInput(question, num, timeOut) {
     abortTimer();
     elements.game.button1.disabled = true;
@@ -501,7 +501,7 @@ function randomNameGen() {
 
 // this function moves the player accross the screen and back
 function movePlayer() {
-    if (playerPos >= elements.game.canvas.width * (5 / 8)) {
+    if (playerPos >= elements.game.canvas.width * (5 / 8)) { // checking if the image has reached its bounds
         hasMoved = true;
     }
     if (hasMoved) {
@@ -524,9 +524,9 @@ function movePlayer() {
             coin += 1;
             alert("Huzzah! Thou hast defeated the fearsome " + enemyName + ", gather thine senses, for another enemy approaches! \nThou vitality hast been partially restored.");
             if ((coin >= enemyWeakness) || (coin >= strengthLevel) || (coin >= timeUpgradeLevel)) {
-                shop();
+                shop(); // running the shop once the player has enough coins
             } else {
-                purchase(3);
+                purchase(3); //or just moving on
             }
         } else { 
             moveEnemy();
@@ -581,40 +581,40 @@ function moveEnemy() {
 function showHighscores(played) {
     let scores;
     if ((localStorage.getItem("highScoresList") === null) && (played)) {
-        localStorage.setItem("highScoresList", playerName + "." + difficulty + ",");
+        localStorage.setItem("highScoresList", playerName + "." + difficulty + ","); //adding a new record into the highscores
         scores = localStorage.getItem("highScoresList");
     } else {
         scores = localStorage.getItem("highScoresList");
         if (played) {
-            scores =  scores + playerName + "." + difficulty + ",";
+            scores =  scores + playerName + "." + difficulty + ",";//adding a new record into the highscores
             localStorage.setItem("highScoresList", scores);
         }
     }
-    scores = scores.split(",");
-    const sortedScores = sortHighscores(scores);
-    elements.highscores.scores.innerText = sortedScores.toString().replace(/,/g, " Foe(s) \n").replace(/[.]/g, " Hast Encountered ") + " Foe(s)";
+    scores = scores.split(","); //splitting the string into an array
+    const sortedScores = sortHighscores(scores); // sorting the array
+    elements.highscores.scores.innerText = sortedScores.toString().replace(/,/g, " Foe(s) \n").replace(/[.]/g, " Hast Encountered ") + " Foe(s)"; //displaying the scores
     gameMusic.play();
     showScreen(elements.highscores.screen);
 }
 
 // this is a hand written selection sort
 function sortHighscores(highscores) {
-    let len = highscores.length;
+    let len = highscores.length; //get the length of the array
     for (let i = 0; i < len; i++) {
-        let max = i;
+        let max = i; //set i as the maximum
         for (let j = i + 1; j < len; j++) {
-            if (Number(highscores[max].split(".")[1]) < Number(highscores[j].split(".")[1])) {
+            if (Number(highscores[max].split(".")[1]) < Number(highscores[j].split(".")[1])) { //compare max and J and set J to max if necesary
                 max = j;
             }
         }
-        if (max !== i) {
+        if (max !== i) { //switch elements if max is not I
             let tmp = highscores[i];
-            highscores[i] = highscores[max];
+            highscores[i] = highscores[max]; 
             highscores[max] = tmp;
         }
     }
     if (len > 10) {
-        highscores.length = 10;
+        highscores.length = 10; // setting a cutoff for the highscores, only displaying the top 10 
     }
     return highscores;
 }
@@ -623,4 +623,4 @@ function sortHighscores(highscores) {
 function main() {
     showPlay();
 }
-main();
+main(); //this is the first function to be called, it initialises the first screen
