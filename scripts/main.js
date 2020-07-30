@@ -303,7 +303,7 @@ function purchase(choice) {
             playerImage.src = 'assets/images/player_0.png';
         }
         difficulty += 1;
-        playerHealth += Math.floor(playerHealth / (10 - difficulty) );
+        playerHealth += Math.floor(playerHealth / 3);
         newQuestion();
     }
 }
