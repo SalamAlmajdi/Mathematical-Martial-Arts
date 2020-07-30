@@ -61,6 +61,7 @@ let timeLeft;
 let playerName;
 let playerHealth;
 let enemyName;
+let damageToPlayer;
 let enemyHealth;
 let playerPos;
 let enemyPos;
@@ -268,35 +269,47 @@ function shop() {
 // this function handles the inputs to the shop
 function purchase(choice) {
     if (choice === 0) {
-        if (coin >= timeUpgradeLevel) {
-            coin -= timeUpgradeLevel;
-            timeUpgradeLevel += 1;
-            elements.game.coins.innerText = coin;
-            elements.game.button1.innerText = "Praise thine business";
-            elements.game.button1.disabled = true; 
+        if (timeUpgradeLevel === 5) {
+            alert("Hark! It is not possible for me to push thine mind beyond this.");
         } else {
-            alert("Thine coin is too measly to acquire such a skill");
+            if (coin >= timeUpgradeLevel) {
+                coin -= timeUpgradeLevel;
+                timeUpgradeLevel += 1;
+                elements.game.coins.innerText = coin;
+                elements.game.button1.innerText = "Praise thine business";
+                elements.game.button1.disabled = true; 
+            } else {
+                alert("Thine coin is too measly to acquire such a skill");
+            }
         }
     } else if (choice === 1) {
-        if (coin >= strengthLevel) {
-            coin -= strengthLevel;
-            strengthLevel += 1;
-            elements.game.coins.innerText = coin;
-            elements.game.button2.innerText = "Praise thine business";
-            elements.game.button2.disabled = true; 
+        if (strengthLevel === 5) {
+            alert("Hark! It is not possible for I to strengthen you beyond this.")
         } else {
-            alert("Thine coin is too measly to acquire such a skill");
+            if (coin >= strengthLevel) {
+                coin -= strengthLevel;
+                strengthLevel += 1;
+                elements.game.coins.innerText = coin;
+                elements.game.button2.innerText = "Praise thine business";
+                elements.game.button2.disabled = true; 
+            } else {
+                alert("Thine coin is too measly to acquire such a skill");
+            }
         }
     } else if (choice === 2) {
-        if (coin >= enemyWeakness) {
-            coin -= enemyWeakness;
-            enemyWeakness += 1;
-            elements.game.coins.innerText = coin;
-            elements.game.button3.innerText = "Praise thine business";
-            elements.game.button3.disabled = true; 
+        if (enemyWeakness === 5) {
+            alert("Hark! The power of thine foes is no longer for me to decrease.");
         } else {
-            alert("Thine coin is too measly to acquire such a skill");
-        }
+            if (coin >= enemyWeakness) {
+                coin -= enemyWeakness;
+                enemyWeakness += 1;
+                elements.game.coins.innerText = coin;
+                elements.game.button3.innerText = "Praise thine business";
+                elements.game.button3.disabled = true; 
+            } else {
+                alert("Thine coin is too measly to acquire such a skill");
+            }
+        }   
     } else if (choice === 3) { // this runs when the exit button is pressed, essentially prepares for the next enemy
         isShop = false;
         ctx.clearRect(0, 0, elements.game.canvas.width, elements.game.canvas.height);
@@ -311,7 +324,7 @@ function purchase(choice) {
             playerImage.src = 'assets/images/player_0.png';
         }
         difficulty += 1;
-        playerHealth += Math.floor(playerHealth / 3);
+        playerHealth = playerHealth + Math.floor(playerHealth / 3);
         if (playerHealth > 100) {
             playerHealth = 100;
         }
@@ -450,24 +463,24 @@ function handleInput(question, num, timeOut) {
     elements.game.button2.disabled = true;
     elements.game.button3.disabled = true;
     elements.game.button4.disabled = true;
-    let damageToPlayer = Math.floor(Math.random() * 21);
-    damageToPlayer += damageToPlayer * (difficulty / 3);
-    damageToPlayer = Math.floor((damageToPlayer) / enemyWeakness);
+    damageToPlayer = Math.floor(Math.random() * 21) + 5;
+    damageToPlayer = damageToPlayer + (damageToPlayer * (difficulty / 3));
+    damageToPlayer = damageToPlayer - Math.floor((damageToPlayer) * ((enemyWeakness - 1) / 6));
     if (! timeOut) {
         if (question.possibleAnswers[num] === question.answer) {
             playerPos = elements.game.canvas.width / 8;
             movePlayer();
-            let damageToEnemy = Math.floor((25 - (25 / (timeLeft + 1.5))));
+            let damageToEnemy = Math.floor((20 - (20 / (timeLeft + 1.5))));
             damageToEnemy += (damageToEnemy / 2) * (strengthLevel - 1);
             enemyHealth -= Math.floor(damageToEnemy);
-            damageToPlayer -= (damageToPlayer + 1) / 3;
+            damageToPlayer = (damageToPlayer) / 3;
         } else {
             moveEnemy();
         }
     } else {
         moveEnemy();
     }
-    playerHealth -= Math.floor(damageToPlayer); 
+    
 }
 
 // this produces really bad randomly generated names for the enemies
@@ -515,7 +528,7 @@ function movePlayer() {
             } else {
                 purchase(3);
             }
-        } else {
+        } else { 
             moveEnemy();
         }
     } else {
@@ -544,6 +557,7 @@ function moveEnemy() {
     }
     if (enemyPos > elements.game.canvas.width * (5 / 8)) {
         hasMoved = false;
+        playerHealth -= Math.floor(damageToPlayer);
         if (playerHealth > 0) {
             newQuestion();
         } else {
@@ -572,7 +586,7 @@ function showHighscores(played) {
     } else {
         scores = localStorage.getItem("highScoresList");
         if (played) {
-            scores = scores + playerName + "." + difficulty + ",";
+            scores =  scores + playerName + "." + difficulty + ",";
             localStorage.setItem("highScoresList", scores);
         }
     }
